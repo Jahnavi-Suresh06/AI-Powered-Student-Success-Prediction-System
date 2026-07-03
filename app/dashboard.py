@@ -22,9 +22,16 @@ warnings.filterwarnings('ignore')
 # ─────────────────────────────────────────────
 # PATH SETUP
 # Adds the project root to Python's search path
-# so we can import from the src/ folder
+# so we can import from the src/ folder.
+#
+# BASE_DIR is computed from this file's own location
+# (not the current working directory). This guarantees
+# imports AND data/model loading work correctly no matter
+# where the app is launched from — your local machine,
+# Streamlit Community Cloud, or any other host.
 # ─────────────────────────────────────────────
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 from src.recommendation import generate_recommendations
 
 # ─────────────────────────────────────────────
@@ -163,7 +170,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     """Loads the trained Random Forest model."""
-    model_path = os.path.join('models', 'random_forest_model.pkl')
+    model_path = os.path.join(BASE_DIR, 'models', 'random_forest_model.pkl')
     if os.path.exists(model_path):
         return joblib.load(model_path)
     return None
@@ -172,7 +179,7 @@ def load_model():
 @st.cache_resource
 def load_feature_cols():
     """Loads the saved feature column names."""
-    path = os.path.join('models', 'feature_columns.pkl')
+    path = os.path.join(BASE_DIR, 'models', 'feature_columns.pkl')
     if os.path.exists(path):
         return joblib.load(path)
     return None
@@ -181,7 +188,7 @@ def load_feature_cols():
 @st.cache_data
 def load_dataset():
     """Loads the processed student dataset."""
-    path = os.path.join('data', 'processed', 'student_cleaned.csv')
+    path = os.path.join(BASE_DIR, 'data', 'processed', 'student_cleaned.csv')
     if os.path.exists(path):
         return pd.read_csv(path)
     return None
