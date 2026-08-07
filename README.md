@@ -252,6 +252,5 @@ min_samples_leaf  : 1
 
 ---
 
-*Final Year Project — BE Artificial Intelligence & Data Science | 2024–2025*
 To run the code :
  streamlit run app\dashboard.py
